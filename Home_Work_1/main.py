@@ -212,7 +212,6 @@ def parse_input(user_input):
 
 def add_contact(args, contacts):
     name, phone = args
-    name = str(name)
     contacts[name] = phone
     return "Contact added."
 
