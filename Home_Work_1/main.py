@@ -211,13 +211,19 @@ def parse_input(user_input):
     return cmd, *args
 
 def add_contact(args, contacts):
-    name, phone = args
-    contacts[name] = phone
+    try:
+        name, phone = args 
+        contacts[name] = phone
+    except ValueError:
+        return "The command 'add' shoud have 2 arguments - 'Name'(1 word) and 'Phone'(1 phone number)"
     return "Contact added."
 
 def change_contact(args, contacts):
-    name = args[0]
-    new_phone = args[1]
+    try:
+        name = args[0]
+        new_phone = args[1]
+    except IndexError:
+        return "The command 'change' shoud have 2 arguments - 'Name'(1 word) and 'Phone'(1 new phone number)"
     phone = contacts.get(name)
     if phone == None:
         phone = 'User is not found'
@@ -229,7 +235,7 @@ def user_phone(args, contacts):
     name = args[0]
     phone = contacts.get(name)
     if len(args) > 1:
-        phone = "Invalid command. Command 'phone' should has one argument only - 'Name'." 
+        phone = "Invalid command. The command 'phone' should have only one argument - 'Name'." 
     if phone == None:
         phone = "User is not found"
     return (phone)
