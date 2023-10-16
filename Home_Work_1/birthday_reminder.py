@@ -50,19 +50,20 @@ Friday: Kim Kardashian, Jan Koum
 Функція виводить користувачів з днями народження на тиждень вперед від поточного дня.
 Тиждень починається з понеділка.
 '''
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
 
 def get_birthdays_per_week(users):
     list_of_birthday = defaultdict(list)
     today = datetime.today().date()
+    tomorrow = today + timedelta(days=1)
     for user in users:
         name = user['name']
         birthday = user['birthday'].date()  
-        birthday_this_year = birthday.replace(year=today.year)
-        if birthday_this_year < today:
-            birthday_this_year = birthday_this_year.replace(year = (today.year + 1))
-        delta_days = (birthday_this_year - today).days
+        birthday_this_year = birthday.replace(year=tomorrow.year)
+        if birthday_this_year < tomorrow:
+            birthday_this_year = birthday_this_year.replace(year = (tomorrow.year + 1))
+        delta_days = (birthday_this_year - tomorrow).days
         if delta_days < 7:
             day_of_week = birthday_this_year.weekday()
             if day_of_week == 0:
@@ -75,14 +76,14 @@ def get_birthdays_per_week(users):
                 list_of_birthday['Thursday'].append(name)
             elif day_of_week == 4:
                 list_of_birthday['Friday'].append(name)
-            elif day_of_week == 5:
+            elif day_of_week == 5 and today.weekday() != 5 and today.weekday() != 6:
                 list_of_birthday['Monday'].append(name)
-            else:
+            elif day_of_week == 6 and today.weekday() != 6:
                 list_of_birthday['Monday'].append(name)
     print(list_of_birthday)
 
-users = ({"name": "Bill Gates", "birthday": datetime(1955, 10, 16)},
-         {"name": "Bill Gates1", "birthday": datetime(1951, 1, 20)},
-         {"name": "Bill Gates2", "birthday": datetime(1960, 10, 16)}
+users = ({"name": "Bill Gates", "birthday": datetime(1955, 1, 1)},
+         {"name": "Bill Gates1", "birthday": datetime(1951, 1, 5)},
+         {"name": "Bill Gates2", "birthday": datetime(1960, 10, 7)}
         )
 get_birthdays_per_week(users)
