@@ -8,9 +8,18 @@ class Field:
         return str(self.value)
 
 class Name(Field):
+
+
+      #  return(Owner.info(self.owner))        
     # реалізація класу
 
 class Phone(Field):
+    def check_number(self, value):
+        if value.isdigit() and len(value) == 10:
+            return value
+        else:
+            return None
+    
     # реалізація класу
 
 class Record:
@@ -18,12 +27,39 @@ class Record:
         self.name = Name(name)
         self.phones = []
 
+    def add_phone(self, phone):
+        Phone(phone)
+    def delete_phone(self, name):
+        pass
+    def change_phone(self, name):
+        pass
+    def search_phone(self, name):
+        pass
+
     # реалізація класу
 
     def __str__(self):
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
 
 class AddressBook(UserDict):
+    def add_record(self, value):
+        pass
+    def search_record(self, value):
+        pass
+    def delete_record(self, value):
+        pass
+
+
+
+    
+class LookUpKeyDict(UserDict):
+    def lookup_key(self, value):
+        keys = []
+        for key in self.data:
+            if self.data[key] == value:
+                keys.append(key)
+        return keys
+
 
 
     # реалізація класу
