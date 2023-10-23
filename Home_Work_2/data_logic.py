@@ -8,17 +8,19 @@ class Field:
         return str(self.value)
 
 class Name(Field):
+    pass
 
 
       #  return(Owner.info(self.owner))        
     # реалізація класу
 
 class Phone(Field):
-    def check_number(self, value):
-        if value.isdigit() and len(value) == 10:
-            return value
-        else:
-            return None
+    pass
+    #def check_number(self, phone):
+     #   if phone.isdigit() and len(phone) == 10:
+      #      return str(phone)
+       # else:
+        #    return None
     
     # реалізація класу
 
@@ -26,9 +28,9 @@ class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
-
     def add_phone(self, phone):
-        Phone(phone)
+        phone = Phone(phone)
+        self.phones.append(phone)
     def delete_phone(self, name):
         pass
     def change_phone(self, name):
@@ -42,25 +44,16 @@ class Record:
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
 
 class AddressBook(UserDict):
-    def add_record(self, value):
-        pass
+    def __init__(self):
+        self.dict = {}
+    def add_record(self, name):
+        self.dict[Name(name)] = Phone(phone)
     def search_record(self, value):
         pass
     def delete_record(self, value):
         pass
 
-
-
-    
-class LookUpKeyDict(UserDict):
-    def lookup_key(self, value):
-        keys = []
-        for key in self.data:
-            if self.data[key] == value:
-                keys.append(key)
-        return keys
-
-
+   
 
     # реалізація класу
 
@@ -69,11 +62,13 @@ book = AddressBook()
 
 # Створення запису для John
 john_record = Record("John")
-john_record.add_phone("1234567890")
+john_record.add_phone("123456789")
 john_record.add_phone("5555555555")
 
 # Додавання запису John до адресної книги
 book.add_record(john_record)
+print(john_record)
+print(book)
 
 # Створення та додавання нового запису для Jane
 jane_record = Record("Jane")
