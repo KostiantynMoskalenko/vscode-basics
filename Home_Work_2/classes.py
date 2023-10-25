@@ -1,5 +1,6 @@
 from collections import UserDict
 
+
 class Field:
     def __init__(self, value):
         self.value = value
@@ -7,44 +8,56 @@ class Field:
     def __str__(self):
         return str(self.value)
 
+
 class Name(Field):
     pass
 
+
 class Phone(Field):
-    pass
+    def __init__(self, value: str):
+        if not all([len(value) == 10, value.isdigit()]):
+            raise ValueError("The phone number must consist of 10 digits")
+        self.value = value
+
 
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        
     def add_phone(self, phone):
         phone = Phone(phone)
         self.phones.append(phone)
+
     def edit_phone(self, old_phone, new_phone):
-        print(list(self.phones))
-        phone_index = self.phones.index(old_phone)
-        print(phone_index)
-        self.phones[phone_index] = new_phone
-        print (self.phones)
-    def delete_phone(self, name):
-        pass
-    def change_phone(self, name):
-        pass
-    def search_phone(self, name):
-        pass
+        for i, p in enumerate(self.phones):
+            if str(self.phones[i]) == old_phone:
+                self.phones[i] = Phone(new_phone)
+        
+    def remove_phone(self, del_phone):
+        for i, p in enumerate(self.phones):
+            if str(self.phones[i]) == del_phone:
+                phone = self.phones[i]
+                self.phones.remove(phone)
+
+    def find_phone(self, phone):
+        for p in self.phones:
+            if p.value == phone:
+                return p
+            
     def __str__(self):
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
 
+
 class AddressBook(UserDict):
-    def add_record(self, name):
-        key_name = str(name)
-        key_name = key_name.split()[2]
-        key_name = key_name[:-1]
-        self.data[key_name] = name
+    def add_record(self, record: Record):
+        self.data[record.name.value] = record
+
     def find(self, value):
         return(self.data.get(value))
-    def delete_record(self, value):
-        pass
+
+    def delete(self, name):
+        del self.data[name]
 
 # Створення нової адресної книги
 book = AddressBook()
