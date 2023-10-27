@@ -16,6 +16,9 @@ The bot works with following commands:
 
 '''
 
+from Home_Work_3 import AddressBook, Birthday, Phone, Record
+
+
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -39,7 +42,8 @@ def parse_input(user_input):
 @input_error
 def add_contact(args, contacts):
     name, phone = args 
-    contacts[name] = phone
+    rec = Record(name, phone)
+    contacts.add_record(rec)
     return "Contact added."
 
 @input_error
@@ -61,7 +65,7 @@ def all_contacts(contacts):
 
 
 def main():
-    contacts = {}
+    contacts = AddressBook()
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")

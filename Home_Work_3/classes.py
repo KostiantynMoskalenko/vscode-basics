@@ -27,6 +27,7 @@ class Birthday:
 
     def week_birthdays(self):
         #birthdays - команда повертає список користувачів, яких потрібно привітати по днях на наступному тижні
+        pass
      
     
 
