@@ -15,7 +15,6 @@ The bot works with following commands:
 9) close або exit:                          Закрити програму.
 
 '''
-from itertools import islice
 from classes import AddressBook, Birthday, Phone, Record
 
 
@@ -52,9 +51,11 @@ def change_contact(args, contacts):
     name = args[0]
     rec = contacts.find(name)
     new_phone = args[1]
-    contact_rec = str(contacts[name])
-    list = contact_rec.split()
-    old_phone = str(list[-1])
+    old_phone = str(rec.find_old_phone())
+    #print(old_phone)
+    #contact_rec = str(contacts[name])
+    #list = contact_rec.split()
+    #old_phone = str(list[-1])
     rec.edit_phone(old_phone, new_phone)
     return "Contact updated."
 
@@ -68,16 +69,23 @@ def all_contacts(contacts):
    for name, record in contacts.data.items():
        print(record)
 
+@input_error
 def add_birthday(args, contacts):
     name = args[0]
     rec = contacts.find(name)
     birthday = args[1]
+    rec.add_birthday(birthday)
+    return "Birthday added."
 
 def show_birthday(args, contacts):
-    pass
+    name = args[0]
+    rec = contacts.find(name)
+    return((rec.show_birthday()))
 
 def birthdays(contacts):
-    contacts.get_birthdays_per_week(contacts)
+    contacts.week_birthdays(contacts)
+    for name, record in contacts.data.items():
+       print(name)
 
 
 def main():

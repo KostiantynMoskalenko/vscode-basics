@@ -15,8 +15,11 @@ class Name(Field):
 
 
 class Birthday:
-    #перевірка на правильність введеня даних
-    
+    def __init__(self, value: str):
+        if not datetime.strptime(value, '%d.%m.%Y'):
+            raise ValueError("The birthday date must be in format DD.MM.YYYY")
+        #перевірка на правильність введеня даних в форматі DD.MM.YYYY
+        self.value = value
 
      
     
@@ -48,19 +51,24 @@ class Record:
             if str(self.phones[i]) == del_phone:
                 phone = self.phones[i]
                 self.phones.remove(phone)
+    
+    def find_old_phone(self):
+        old_phone = str(self.phones[0])
+        return(old_phone)
 
     def find_phone(self, phone):
         for p in self.phones:
             if p.value == phone:
                 return p
             
-    def add_birhtday(self, birthday):
+    def add_birthday(self, birthday):
         birthday = Birthday(birthday)
-        pass
-                
-    def show_birthday(self, name):
-        #команда show-birthday - показуємо день народження контакту   
-        pass
+        self.birthday = birthday
+        return(self.birthday)
+                        
+    def show_birthday(self):
+        birthday = str(self.birthday.value)
+        return (birthday)
 
     def __str__(self):
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
@@ -76,11 +84,11 @@ class AddressBook(UserDict):
     def delete(self, name):
         del self.data[name]
 
-    def week_birthdays(self):
+    def week_birthdays(self,contacts):
         list_of_birthday = defaultdict(list)
         today = datetime.today().date()
         tomorrow = today + timedelta(days=1)
-        for user in users:
+        for user in contacts:
             name = user["name"]
             birthday = user["birthday"].date()  
             birthday_this_year = birthday.replace(year=tomorrow.year)
