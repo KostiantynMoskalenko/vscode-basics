@@ -11,19 +11,18 @@ class Field:
 
 
 class Name(Field):
-    pass
+    def __init__(self, value: str):
+        if not value.isalpha():
+            raise ValueError("The name must consist letters only")
+        self.value = value
 
 
 class Birthday:
     def __init__(self, value: str):
         if not datetime.strptime(value, '%d.%m.%Y'):
             raise ValueError("The birthday date must be in format DD.MM.YYYY")
-        #перевірка на правильність введеня даних в форматі DD.MM.YYYY
         self.value = value
-
-     
-    
-
+   
 
 class Phone(Field):
     def __init__(self, value: str):
@@ -45,12 +44,6 @@ class Record:
         for i, p in enumerate(self.phones):
             if str(self.phones[i]) == old_phone:
                 self.phones[i] = Phone(new_phone)
-        
-    def remove_phone(self, del_phone):
-        for i, p in enumerate(self.phones):
-            if str(self.phones[i]) == del_phone:
-                phone = self.phones[i]
-                self.phones.remove(phone)
     
     def find_old_phone(self):
         old_phone = str(self.phones[0])
@@ -81,9 +74,6 @@ class AddressBook(UserDict):
     def find(self, value):
         return(self.data.get(value))
 
-    def delete(self, name):
-        del self.data[name]
-
     def week_birthdays(self,contacts):
         list_of_birthday = defaultdict(list)
         today = datetime.today().date()
@@ -91,8 +81,6 @@ class AddressBook(UserDict):
         for name, record in contacts.data.items():
             rec = contacts.find(name)
             birthday = datetime.strptime(rec.show_birthday(), '%d.%m.%Y')
-            #name = user["name"]
-            #birthday = user["birthday"].date()  
             birthday_this_year = birthday.replace(year=tomorrow.year)
             birthday_this_year = datetime.date(birthday_this_year)
             if birthday_this_year < tomorrow:
@@ -115,42 +103,3 @@ class AddressBook(UserDict):
                 elif day_of_week == 6 and today.weekday() != 6:
                     list_of_birthday["Monday"].append(name)
         return(list_of_birthday)
-
-        
-
-
-if __name__ == "__main__":
-
-    # Створення нової адресної книги
-    book = AddressBook()
-
-    # Створення запису для John
-    john_record = Record("John")
-    john_record.add_phone("1234567890")
-    john_record.add_phone("5555555555")
-
-    # Додавання запису John до адресної книги
-    book.add_record(john_record)
-
-    # Створення та додавання нового запису для Jane
-    jane_record = Record("Jane")
-    jane_record.add_phone("9876543210")
-    book.add_record(jane_record)
-
-    # Виведення всіх записів у книзі
-    for name, record in book.data.items():
-        print(record)
-
-    # Знаходження та редагування телефону для John
-    john = book.find("John")
-    john.edit_phone("1234567890", "1112223333")
-
-
-    print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
-
-    # Пошук конкретного телефону у записі John
-    found_phone = john.find_phone("5555555555")
-    print(f"{john.name}: {found_phone}")  # Виведення: 5555555555
-
-    # Видалення запису Jane
-    book.delete("Jane")

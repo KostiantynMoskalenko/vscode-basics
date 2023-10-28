@@ -15,7 +15,7 @@ The bot works with following commands:
 9) close або exit:                          Закрити програму.
 
 '''
-from classes import AddressBook, Birthday, Phone, Record
+from classes import AddressBook, Record
 
 
 
@@ -52,10 +52,6 @@ def change_contact(args, contacts):
     rec = contacts.find(name)
     new_phone = args[1]
     old_phone = str(rec.find_old_phone())
-    #print(old_phone)
-    #contact_rec = str(contacts[name])
-    #list = contact_rec.split()
-    #old_phone = str(list[-1])
     rec.edit_phone(old_phone, new_phone)
     return "Contact updated."
 
@@ -86,13 +82,13 @@ def birthdays(contacts):
     birthdays_dict = dict(contacts.week_birthdays(contacts))
     return(birthdays_dict)
 
-
-
 def main():
     contacts = AddressBook()
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
+        if user_input == '':
+            continue
         command, *args = parse_input(user_input)
         if command in ["close", "exit"]:
             print("Good bye!")
