@@ -17,17 +17,7 @@ class Name(Field):
 class Birthday:
     #перевірка на правильність введеня даних
     
-    def add_birthday(self, birthday):
-        #функція обробки команди add-birthday - додаємо до контакту день народження в форматі DD.MM.YYYY
-        pass
-    
-    def show_birthday(self, name):
-        #команда show-birthday - показуємо день народження контакту   
-        pass
 
-    def week_birthdays(self):
-        #birthdays - команда повертає список користувачів, яких потрібно привітати по днях на наступному тижні
-        pass
      
     
 
@@ -65,8 +55,13 @@ class Record:
                 return p
             
     def add_birhtday(self, birthday):
+        birthday = Birthday(birthday)
         pass
-            
+                
+    def show_birthday(self, name):
+        #команда show-birthday - показуємо день народження контакту   
+        pass
+
     def __str__(self):
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
 
@@ -80,8 +75,8 @@ class AddressBook(UserDict):
 
     def delete(self, name):
         del self.data[name]
-    
-    def get_birthdays_per_week(users):
+
+    def week_birthdays(self):
         list_of_birthday = defaultdict(list)
         today = datetime.today().date()
         tomorrow = today + timedelta(days=1)
@@ -108,7 +103,7 @@ class AddressBook(UserDict):
                     list_of_birthday["Monday"].append(name)
                 elif day_of_week == 6 and today.weekday() != 6:
                     list_of_birthday["Monday"].append(name)
-        print(list_of_birthday)
+        return(list_of_birthday)
 
 if __name__ == "__main__":
 

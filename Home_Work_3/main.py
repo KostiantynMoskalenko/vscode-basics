@@ -15,8 +15,8 @@ The bot works with following commands:
 9) close або exit:                          Закрити програму.
 
 '''
-
-from Home_Work_3 import AddressBook, Birthday, Phone, Record
+from itertools import islice
+from classes import AddressBook, Birthday, Phone, Record
 
 
 
@@ -42,15 +42,20 @@ def parse_input(user_input):
 @input_error
 def add_contact(args, contacts):
     name, phone = args 
-    rec = Record(name, phone)
+    rec = Record(name)
+    rec.add_phone(phone)
     contacts.add_record(rec)
     return "Contact added."
 
 @input_error
 def change_contact(args, contacts):
     name = args[0]
+    rec = contacts.find(name)
     new_phone = args[1]
-    contacts[name] = new_phone
+    contact_rec = str(contacts[name])
+    list = contact_rec.split()
+    old_phone = str(list[-1])
+    rec.edit_phone(old_phone, new_phone)
     return "Contact updated."
 
 @input_error
@@ -60,8 +65,19 @@ def user_phone(args, contacts):
     return (phone)
 
 def all_contacts(contacts):
-    list = contacts
-    return (list)
+   for name, record in contacts.data.items():
+       print(record)
+
+def add_birthday(args, contacts):
+    name = args[0]
+    rec = contacts.find(name)
+    birthday = args[1]
+
+def show_birthday(args, contacts):
+    pass
+
+def birthdays(contacts):
+    contacts.get_birthdays_per_week(contacts)
 
 
 def main():
@@ -82,7 +98,13 @@ def main():
         elif command == "phone":
             print(user_phone(args, contacts))
         elif command == "all":
-            print(all_contacts(contacts))
+            all_contacts(contacts)
+        elif command == "add-birthday":
+            print(add_birthday(args, contacts))
+        elif command == "show-birthday":
+            print(show_birthday(args, contacts))
+        elif command == "birthdays":
+            print(birthdays(contacts))        
         else:
             print("Invalid command.")
 
