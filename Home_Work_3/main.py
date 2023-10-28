@@ -83,9 +83,9 @@ def show_birthday(args, contacts):
     return((rec.show_birthday()))
 
 def birthdays(contacts):
-    contacts.week_birthdays(contacts)
-    for name, record in contacts.data.items():
-       print(name)
+    birthdays_dict = dict(contacts.week_birthdays(contacts))
+    return(birthdays_dict)
+
 
 
 def main():

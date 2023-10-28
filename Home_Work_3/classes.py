@@ -88,10 +88,13 @@ class AddressBook(UserDict):
         list_of_birthday = defaultdict(list)
         today = datetime.today().date()
         tomorrow = today + timedelta(days=1)
-        for user in contacts:
-            name = user["name"]
-            birthday = user["birthday"].date()  
+        for name, record in contacts.data.items():
+            rec = contacts.find(name)
+            birthday = datetime.strptime(rec.show_birthday(), '%d.%m.%Y')
+            #name = user["name"]
+            #birthday = user["birthday"].date()  
             birthday_this_year = birthday.replace(year=tomorrow.year)
+            birthday_this_year = datetime.date(birthday_this_year)
             if birthday_this_year < tomorrow:
                 birthday_this_year = birthday_this_year.replace(year = (tomorrow.year + 1))
             delta_days = (birthday_this_year - tomorrow).days
@@ -112,6 +115,9 @@ class AddressBook(UserDict):
                 elif day_of_week == 6 and today.weekday() != 6:
                     list_of_birthday["Monday"].append(name)
         return(list_of_birthday)
+
+        
+
 
 if __name__ == "__main__":
 
